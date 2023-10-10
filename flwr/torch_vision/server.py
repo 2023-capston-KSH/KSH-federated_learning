@@ -85,7 +85,7 @@ def create_strategy(
 	"""Create the FedAvg strategy."""
 	
 	model_parameters = [val.cpu().numpy() for _, val in model.state_dict().items()]
-	save_path = "model_round_{}.pt"
+	save_path = args.save_path
 
 	return fl.server.strategy.FedAvg(
 		fraction_fit=args.fraction_fit,
@@ -126,6 +126,13 @@ if __name__ == "__main__":
 		required=False,
 		help="Set to true to use only 10 datasamples for validation. \
 			Useful for testing purposes. Default: False",
+	)
+	parser.add_argument(
+		"--save_path",
+		type=str,
+		default="./model/model_round_{}.pt",
+		required=False,
+		help="Path to save the model after each round. Default: ./model/model_round_{}.pt",
 	)
 	parser.add_argument(
 		"--batch_size",
