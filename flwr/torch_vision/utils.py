@@ -1,12 +1,17 @@
 import torch
 import torchvision.transforms as transforms
-from torchvision.datasets import CIFAR10, CIFAR100, MNIST, FashionMNIST, ImageNet, STL10, SVHN
-
+from torchvision.datasets import (
+    CIFAR10,
+    CIFAR100,
+    MNIST,
+    FashionMNIST,
+    ImageNet,
+    STL10,
+    SVHN,
+)
 import warnings
 
 warnings.filterwarnings("ignore")
-
-# DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 def load_data(dataset_name, data_dir="./dataset"):
@@ -16,46 +21,35 @@ def load_data(dataset_name, data_dir="./dataset"):
             transforms.Resize(256),
             transforms.CenterCrop(224),
             transforms.ToTensor(),
-            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[
-                                 0.229, 0.224, 0.225]),
+            transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ]
     )
 
     if dataset_name == "cifar10":
-        trainset = CIFAR10(data_dir, train=True,
-                           download=True, transform=transform)
-        testset = CIFAR10(data_dir, train=False,
-                          download=True, transform=transform)
+        trainset = CIFAR10(data_dir, train=True, download=True, transform=transform)
+        testset = CIFAR10(data_dir, train=False, download=True, transform=transform)
     elif dataset_name == "cifar100":
-        trainset = CIFAR100(data_dir, train=True,
-                            download=True, transform=transform)
-        testset = CIFAR100(data_dir, train=False,
-                           download=True, transform=transform)
+        trainset = CIFAR100(data_dir, train=True, download=True, transform=transform)
+        testset = CIFAR100(data_dir, train=False, download=True, transform=transform)
     elif dataset_name == "mnist":
-        trainset = MNIST(data_dir, train=True,
-                         download=True, transform=transform)
-        testset = MNIST(data_dir, train=False,
-                        download=True, transform=transform)
+        trainset = MNIST(data_dir, train=True, download=True, transform=transform)
+        testset = MNIST(data_dir, train=False, download=True, transform=transform)
     elif dataset_name == "fashion_mnist":
-        trainset = FashionMNIST(data_dir, train=True,
-                                download=True, transform=transform)
-        testset = FashionMNIST(data_dir, train=False,
-                               download=True, transform=transform)
+        trainset = FashionMNIST(
+            data_dir, train=True, download=True, transform=transform
+        )
+        testset = FashionMNIST(
+            data_dir, train=False, download=True, transform=transform
+        )
     elif dataset_name == "imagenet":
-        trainset = ImageNet(data_dir, split="train",
-                            download=True, transform=transform)
-        testset = ImageNet(data_dir, split="val",
-                           download=True, transform=transform)
+        trainset = ImageNet(data_dir, split="train", download=True, transform=transform)
+        testset = ImageNet(data_dir, split="val", download=True, transform=transform)
     elif dataset_name == "stl10":
-        trainset = STL10(data_dir, split="train",
-                         download=True, transform=transform)
-        testset = STL10(data_dir, split="test",
-                        download=True, transform=transform)
+        trainset = STL10(data_dir, split="train", download=True, transform=transform)
+        testset = STL10(data_dir, split="test", download=True, transform=transform)
     elif dataset_name == "svhn":
-        trainset = SVHN(data_dir, split="train",
-                        download=True, transform=transform)
-        testset = SVHN(data_dir, split="test",
-                       download=True, transform=transform)
+        trainset = SVHN(data_dir, split="train", download=True, transform=transform)
+        testset = SVHN(data_dir, split="test", download=True, transform=transform)
     else:
         raise ValueError("Invalid dataset name")
 
@@ -134,8 +128,7 @@ def test(net, testloader, steps: int = None, device: str = "cpu"):
 def replace_classifying_layer(efficientnet_model, num_classes: int = 10):
     """Replaces the final layer of the classifier."""
     num_features = efficientnet_model.classifier.fc.in_features
-    efficientnet_model.classifier.fc = torch.nn.Linear(
-        num_features, num_classes)
+    efficientnet_model.classifier.fc = torch.nn.Linear(num_features, num_classes)
 
 
 def load_efficientnet(entrypoint: str = "nvidia_efficientnet_b0", classes: int = None):

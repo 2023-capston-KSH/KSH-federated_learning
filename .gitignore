@@ -1,6 +1,8 @@
 # Dataset folder
 dataset/
+model/
 *.pt
+.env/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
