@@ -1,4 +1,11 @@
 version: '3'
 services:
-  capstone:
+  flwr:
     build: .
+    ports:
+      - "8000:8080"
+    volumes:
+      - flwr-volume:/app
+
+volumes:
+  flwr-volume:
