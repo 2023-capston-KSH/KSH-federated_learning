@@ -82,7 +82,7 @@ class FedAvgWithModel(fl.server.strategy.FedAvg):
 
 def main(args):
     # Define model
-    model = AutoModelForSequenceClassification.from_pretrained("distilbert-base-uncased")
+    model = AutoModelForSequenceClassification.from_pretrained(args.checkpoint, num_labels=2)
 
     # Define strategy
     strategy = FedAvgWithModel(
@@ -92,7 +92,7 @@ def main(args):
         min_fit_clients=args.min_fit_clients,
         min_evaluate_clients=args.min_evaluate_clients,
         min_available_clients=args.min_available_clients,
-        on_fit_config_fn=lambda r: fit_config(r, args.batch_size, args.local_epochs, args.checkpoint),
+        on_fit_config_fn=lambda r: fit_config(r, args.batch_size, args.local_epochs),
         save_path=args.save_path,
     )
 
@@ -111,8 +111,8 @@ if __name__ == "__main__":
         type=str,
         default="distilbert-base-uncased",
         required=False,
-        help="Checkpoint to use for training. Default: distilbert-base-uncased",
-	)
+        help="Checkpoint to use. Default: distilbert-base-uncased",
+    )
     parser.add_argument(
         "--num_rounds",
         type=int,
