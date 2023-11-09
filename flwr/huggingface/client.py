@@ -19,20 +19,18 @@ def load_data(CHECKPOINT, batch_size=32):
 	raw_datasets = load_dataset("imdb")
 	raw_datasets = raw_datasets.shuffle(seed=42)
 
-	# remove unnecessary data split
-	del raw_datasets["unsupervised"]
-
 	tokenizer = AutoTokenizer.from_pretrained(CHECKPOINT)
 
 	def tokenize_function(examples):
 		return tokenizer(examples["text"], truncation=True)
 
 	# random 100 samples
-	population = random.sample(range(len(raw_datasets["train"])), 100)
+	population = random.sample(range(len(raw_datasets["train"])), 10)
+	population2 = random.sample(range(len(raw_datasets["test"])), 10)
 
 	tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 	tokenized_datasets["train"] = tokenized_datasets["train"].select(population)
-	tokenized_datasets["test"] = tokenized_datasets["test"].select(population)
+	tokenized_datasets["test"] = tokenized_datasets["test"].select(population2)
 
 	tokenized_datasets = tokenized_datasets.remove_columns("text")
 	tokenized_datasets = tokenized_datasets.rename_column("label", "labels")
