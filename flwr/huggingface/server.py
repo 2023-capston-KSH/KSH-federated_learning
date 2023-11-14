@@ -100,7 +100,7 @@ def main(args):
 	# Start server
 	if args.log_server != "/":
 		logger.configure(identifier=args.room_id, host=args.log_server)
-	logger.configure(identifier=args.room_id, filename=f"./log/server_{args.room_id}.log")
+	logger.configure(identifier=args.room_id, filename=f"/volume/server.log")
 
 	fl.server.start_server(
 		server_address=args.server_address,
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 	parser.add_argument(
 		"--save_path",
 		type=str,
-		default="model",
+		default="/volume/model",
 		required=False,
 		help="Path to save the model. Default: model",
 	)
