@@ -14,9 +14,9 @@ from transformers import AdamW, AutoModelForSequenceClassification, AutoTokenize
 warnings.filterwarnings("ignore", category=UserWarning)
 
 
-def load_data(CHECKPOINT, batch_size=32):
+def load_data(CHECKPOINT, DATASET, batch_size=32):
 	"""Load IMDB data (training and eval)"""
-	raw_datasets = load_dataset("imdb")
+	raw_datasets = load_dataset(DATASET)
 	raw_datasets = raw_datasets.shuffle(seed=42)
 
 	tokenizer = AutoTokenizer.from_pretrained(CHECKPOINT)
@@ -81,7 +81,7 @@ def test(net, testloader, DEVICE):
 def main(args):
 	net = AutoModelForSequenceClassification.from_pretrained(args.checkpoint, num_labels=2).to(args.device)
 
-	trainloader, testloader = load_data(CHECKPOINT=args.checkpoint)
+	trainloader, testloader = load_data(CHECKPOINT=args.checkpoint, DATASET=args.dataset)
 
 	# Flower client
 	class IMDBClient(fl.client.NumPyClient):
@@ -127,7 +127,7 @@ if __name__ == "__main__":
 		type=str,
 		default="127.0.0.1:8080",
 		required=False,
-		help="Server address. Default:"
+		help="Server address. Default:127.0.0.1:8080"
 	)
 	parser.add_argument(
 		"--device",
@@ -136,5 +136,11 @@ if __name__ == "__main__":
 		required=False,
 		help="Device to use for training. Default: cuda:0",
 	)
-
+	parser.add_argument(
+		"--dataset",
+		type=str,
+		default="rotten_tomatoes",
+		required=False,
+		help="Log server address. Choose from imdb, rotten_tomatoes. Default: imdb",
+	)
 	main(args=parser.parse_args())
