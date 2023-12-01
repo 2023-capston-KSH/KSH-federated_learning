@@ -41,16 +41,18 @@
 
 ```
 --checkpoint CHECKPOINT
-					Checkpoint to use. Default: distilbert-base-   
-					uncased
+					Checkpoint to use. Default: distilbert-base-uncased
 --server_address SERVER_ADDRESS
-					Server address. Default:
---device DEVICE       Device to use for training. Default: cuda:0  
+					Server address. Default: localhost:8080
+--device DEVICE     
+					Device to use for training. Default: cuda:0
+--dataset DATASET
+					Choose train dataset: imdb; rotten_tomatoes Default: imdb
 ```
 
 ## Logger Format
 
-`server.py` 실행 시 room_id와 log_server specify 할 시 아래 형식의 로그 remote server로 보냄 
+`server.py` 실행 시 room_id와 log_server specify 하면 아래 형식의 로그 remote server로 보냄 
 
 ```json
 {
