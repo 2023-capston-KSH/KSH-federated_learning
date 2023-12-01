@@ -25,8 +25,8 @@ def load_data(CHECKPOINT, DATASET, batch_size=32):
 		return tokenizer(examples["text"], truncation=True)
 
 	# random 100 samples
-	population = random.sample(range(len(raw_datasets["train"])), 10)
-	population2 = random.sample(range(len(raw_datasets["test"])), 10)
+	population = random.sample(range(len(raw_datasets["train"])), 100)
+	population2 = random.sample(range(len(raw_datasets["test"])), 100)
 
 	tokenized_datasets = raw_datasets.map(tokenize_function, batched=True)
 	tokenized_datasets["train"] = tokenized_datasets["train"].select(population)
