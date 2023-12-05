@@ -77,7 +77,7 @@ class FedAvgWithModel(fl.server.strategy.FedAvg):
 			self.model.load_state_dict(state_dict, strict=True)
 
 			# Save the model in SafeTensors format
-			self.model.save_pretrained(f"{self.save_path}/round_{server_round}", safe=True)
+			self.model.save_pretrained(f"{self.save_path}", safe=True)
 		return aggregated_parameters, aggregated_metrics
 
 
